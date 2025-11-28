@@ -10,6 +10,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"time"
 	"unicode"
 	"unicode/utf8"
 )
@@ -118,21 +119,38 @@ const storm string = `
 `
 
 const sunny string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-   ` + Yellow + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡔⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀` + Reset + `⠀
-   ` + Yellow + `⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⡼⠀⢰⣟⡇⠀⠀⢤⠂⠀⠀⠀⠀⠀⠀⠀` + Reset + `⠀
-   ` + Yellow + `⠀⠀⠀⠀⠀⠀⣿⣦⣀⠀⢛⡵⣸⣟⡾⡆⡸⡹⠀⣴⡿⠟⠁⠀⠀⠀⠀` + Reset + `
-   ` + Yellow + `⠀⠀⠀⣧⠀⢹⣾⡝⣿⢺⡖⣽⣯⣽⡏⣿⣥⣾⢳⣿⠀⠀⠀⠀⠀⠀⠀` + Reset + `
-   ` + Yellow + `⡀⠀⠀⠈⠹⣢⠶⢿⠝⡫⣕⡱⡸⢔⡹⡌⣟⡹⣟⡮⡰⡍⠋⠁⠀⠀⠀` + Reset + `
-   ` + Yellow + `⢻⡶⣶⢶⣖⡾⡯⢎⠵⡓⣤⠳⣱⠩⢖⡩⢦⠱⢎⣵⣯⣴⣾⡻⠟⠶⠄` + Reset + `
-   ` + Yellow + `⠀⠉⠛⠚⠾⣿⢱⡩⢎⡵⣊⠗⣌⢳⡩⣝⢮⠹⡜⠬⣷⣟⠗⠁⠀⠀⠀` + Reset + `
-   ` + Yellow + `⠈⠲⠬⠓⢮⣼⢣⡜⢥⡚⢬⡙⣬⠲⣑⠮⣌⠳⡜⢣⣯⣝⡬⠣⠖⠄⠀` + Reset + `
-   ` + Yellow + `⠀⠀⣠⣾⣻⣿⡡⢞⢢⢝⢢⡝⢤⢳⢩⠖⣩⠎⡵⢣⡿⣵⢶⡦⣄⠀⠀` + Reset + `
-   ` + Yellow + `⠲⢟⣟⠾⠓⡛⡟⣬⠣⣎⠷⣘⠇⣮⠱⣎⡱⢎⣱⣛⠻⠾⠋⠙⠫⢧⠀` + Reset + `
-   ` + Yellow + `⠀⠀⢀⣄⡲⠝⣸⢯⡷⣌⡚⡥⢫⡕⢫⡔⣥⢿⡽⡊⠽⢱⠄⠀⠀⠀⠀` + Reset + `
-   ` + Yellow + `⠀⠀⠀⠀⠀⠀⡿⣟⡻⣣⢛⣿⣧⡼⣟⣸⡛⣿⡻⣿⢄⠀⠣⠀⠀⠀⠀` + Reset + `
-   ` + Yellow + `⠀⠀⠀⠀⢀⣴⣻⠝⠀⡷⠏⠹⡾⣽⡇⢺⣣⠈⠉⠻⣯⠀⠀⠀⠀⠀⠀` + Reset + `
-   ` + Yellow + `⠀⠀⠀⠀⠍⠉⠀⠀⠔⠋⠀⠀⢹⣳⠇⠀⠍⠀⠀⠀⠍⠀⠀⠀⠀⠀⠀` + Reset + `
-   ` + Yellow + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠜⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀` + Reset + `
+          ` + Yellow + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡔⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀⠀` + Reset + `⠀
+          ` + Yellow + `⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⡼⠀⢰⣟⡇⠀⠀⢤⠂⠀⠀⠀⠀⠀⠀⠀      ` + Reset + `⠀
+          ` + Yellow + `⠀⠀⠀⠀⠀⠀⣿⣦⣀⠀⢛⡵⣸⣟⡾⡆⡸⡹⠀⣴⡿⠟⠁⠀⠀⠀⠀      ` + Reset + `
+          ` + Yellow + `⠀⠀⠀⣧⠀⢹⣾⡝⣿⢺⡖⣽⣯⣽⡏⣿⣥⣾⢳⣿⠀⠀⠀⠀⠀⠀⠀      ` + Reset + `
+          ` + Yellow + `⡀⠀⠀⠈⠹⣢⠶⢿⠝⡫⣕⡱⡸⢔⡹⡌⣟⡹⣟⡮⡰⡍⠋⠁⠀⠀⠀      ` + Reset + `
+          ` + Yellow + `⢻⡶⣶⢶⣖⡾⡯⢎⠵⡓⣤⠳⣱⠩⢖⡩⢦⠱⢎⣵⣯⣴⣾⡻⠟⠶⠄      ` + Reset + `
+          ` + Yellow + `⠀⠉⠛⠚⠾⣿⢱⡩⢎⡵⣊⠗⣌⢳⡩⣝⢮⠹⡜⠬⣷⣟⠗⠁⠀⠀⠀      ` + Reset + `
+          ` + Yellow + `⠈⠲⠬⠓⢮⣼⢣⡜⢥⡚⢬⡙⣬⠲⣑⠮⣌⠳⡜⢣⣯⣝⡬⠣⠖⠄⠀      ` + Reset + `
+          ` + Yellow + `⠀⠀⣠⣾⣻⣿⡡⢞⢢⢝⢢⡝⢤⢳⢩⠖⣩⠎⡵⢣⡿⣵⢶⡦⣄⠀⠀      ` + Reset + `
+          ` + Yellow + `⠲⢟⣟⠾⠓⡛⡟⣬⠣⣎⠷⣘⠇⣮⠱⣎⡱⢎⣱⣛⠻⠾⠋⠙⠫⢧⠀      ` + Reset + `
+          ` + Yellow + `⠀⠀⢀⣄⡲⠝⣸⢯⡷⣌⡚⡥⢫⡕⢫⡔⣥⢿⡽⡊⠽⢱⠄⠀⠀⠀⠀      ` + Reset + `
+          ` + Yellow + `⠀⠀⠀⠀⠀⠀⡿⣟⡻⣣⢛⣿⣧⡼⣟⣸⡛⣿⡻⣿⢄⠀⠣⠀⠀⠀⠀      ` + Reset + `
+          ` + Yellow + `⠀⠀⠀⠀⢀⣴⣻⠝⠀⡷⠏⠹⡾⣽⡇⢺⣣⠈⠉⠻⣯⠀⠀⠀⠀⠀⠀      ` + Reset + `
+          ` + Yellow + `⠀⠀⠀⠀⠍⠉⠀⠀⠔⠋⠀⠀⢹⣳⠇⠀⠍⠀⠀⠀⠍⠀⠀⠀⠀⠀⠀      ` + Reset + `
+          ` + Yellow + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠜⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ` + Reset + `
+	`
+
+const moon string = `
+          ⠀⠀⠀⠀⠀⠀⠀⣀⣤⡴⠶⠿⠛⢏⡿⠖⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⠀⠀⠀⠀⢀⡴⣞⠯⠉⠈⠀⣠⡶⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⠀⠀⣠⣴⠟⠙⠈⣎⡹⠂⣴⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⠀⢠⣯⡟⢚⣀⠀⠀⠀⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⠀⡿⡃⢋⣌⠂⠈⠆⡠⡎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⣸⢿⠎⢰⡈⠀⠈⠀⣹⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⣸⣿⡄⠷⣠⠀⠀⠀⡸⡗⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⢹⣾⣿⣷⣛⠀⠀⠀⣜⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⠸⣿⢻⣏⠸⡃⠀⠀⠈⢹⢧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⠀⢻⣿⡮⣠⣗⠒⠤⠀⠀⠹⣳⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
+          ⠀⠀⣼⢿⣗⣧⣦⢤⠇⢀⣤⣄⠙⣿⡦⣄⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠄      
+          ⠀⠀⠈⠛⢏⣷⣶⣜⣤⣈⠂⠜⠀⢀⣀⡉⡭⠯⠖⠲⠒⢶⢖⣯⠟⠁⠀      
+          ⠀⠀⠀⠀⠀⠙⠻⣿⣿⣷⣷⣯⣔⡿⣃⠦⡵⣠⠠⢤⣤⠿⠋⠀⠀⠀⠀      
+          ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠓⠿⠽⣷⣿⣾⡿⠞⠛⠉⠀⠀⠀⠀⠀⠀⠀      
 	`
 
 const partialCloud string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -147,6 +165,29 @@ const partialCloud string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
    ` + Yellow + `⠀⠀⠀⣠⣾⣻⣿⡡⢞⢢` + Reset + `⣤⣴⣾⣿⣿⣟⣾⣿⡿⣟⣿⣿⣾⣿⣟⣿⣿⣿⣿⣽⢣⠄⠀⠀⠀⠀⠀⠀⠀⠀
    ` + Yellow + `⠀⠲⢟⣟⠾⠓⡛⢀` + Reset + `⣰⣿⣿⣿⣿⣿⣿⢿⡿⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣯⠻⡜⠀⠀⠀⠀⠀⠀⠀⠀
    ` + Yellow + `⠀⠀⠀⢀⣄⡲` + Reset + `⣀⡶⣯⢻⢏⣿⣳⣾⣿⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣏⢷⣺⣝⡾⣤⣄⡀⠀⠀⠀⠀⠀
+   ⠀⠀⠀⢀⣴⣾⣿⣿⣿⣯⣾⣷⣿⣿⣿⣿⣿⢿⡻⣟⡻⢿⢿⡛⣝⣶⣿⣾⣿⣻⢿⣿⣿⣾⡝⡶⣄⠀⠀⠀
+   ⠀⢀⡾⣿⣿⣿⢿⣽⣿⣿⣿⣿⣿⣿⣿⣹⣾⣯⣷⣿⣿⣞⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⡵⣩⠞⣀⠀
+   ⠀⢾⣽⡿⣟⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢿⣯⢿⣱⢻⡄⠠
+   ⣘⢮⣟⣿⣽⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣟⢯⢞⣯⢖⠠
+   ⠌⠹⣾⡹⣞⣿⣽⣻⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⡽⣟⣯⢟⣾⡹⢎⡗⣎⠒
+   ⠐⣌⢳⡽⣹⡞⣧⡟⣷⢫⣷⣻⢭⣻⡽⢯⣿⢿⣯⢿⣿⣟⡿⣿⢯⣟⣿⢾⡽⢯⢿⣹⢮⡟⡾⢡⣋⠼⡐⠂
+   ⠀⠈⢆⠳⡌⣝⢲⡝⣯⢳⡞⣵⢫⣗⡻⣝⢾⣛⢾⣛⠾⣭⢻⡭⣟⢾⡹⢧⠻⣝⢮⡝⡾⠼⣍⠳⢌⠂⠁⠀
+   ⠀⠀⠀⠑⠘⢌⠣⠞⡰⢣⠚⡌⢧⡘⡱⢊⠞⢨⠓⡌⠳⣡⠓⡜⢌⠲⡉⢏⡱⢎⠲⡙⡜⠣⠎⠑⠀⠀⠀⠀
+   ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠈⠈⠀⠀⠀⠁⠈⠀⠀⠀⠁⠀⠀⠀⠈⠀⠁⠈⠀⠈⠁⠈⠀⠁⠀⠀⠀⠀⠀⠀
+	`
+
+const partialCloudNight string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+   ` + Yellow + `⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡴⠶⠿⠛⢏⡿⠖⠂⠀⠀⠀⠀⠀⠀⠀` + Reset + `⠀              
+   ` + Yellow + `⠀⠀⠀⠀⠀⢀⡴⣞⠯⠉⠈⠀⣠⡶⠊⠀⠀⠀⠀⠀⠀⠀             ` + Reset + `     
+   ` + Yellow + `⠀⠀⠀⣠⣴⠟⠙⠈⣎⡹⠂⣴⠋⠀⠀⠀⠀              ` + Reset + `         
+   ` + Yellow + `⠀⠀⢠⣯⡟⢚⣀⠀⠀⠀⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀    ` + Reset + `        
+   ` + Yellow + `⡀⠀⡿⡃⢋⣌⠂⠈⠆⡠⡎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀    ` + Reset + `             
+   ` + Yellow + ` ⣸⢿⠎⢰⡈⠀⠈⠀⣹⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀ ` + Reset + `                
+   ` + Yellow + `⠀⣸⣿⡄⠷⣠⠀⠀⠀⡸⡗      ` + Reset + `  ⢀⣤⣶⡿⣽⣻⣞⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀
+   ` + Yellow + `⠀⢹⣾⣿⣷⣛⠀⠀⠀⣜⣷   ` + Reset + ` ⡀⢀⣴⣾⣿⣿⣿⢿⣿⡿⣿⣿⣾⣯⢷⣂⠀⠀⠀⠀⠀   ⠀
+   ` + Yellow + `⠀⠸⣿⢻⣏⠸⡃⠀⠀⠈⢹` + Reset + `⣤⣴⣾⣿⣿⣟⣾⣿⡿⣟⣿⣿⣾⣿⣟⣿⣿⣿⣿⣽⢣⠄⠀⠀⠀⠀  ⠀
+   ` + Yellow + `⠀ ⠲⢟⣟⠾⠓⡛⢀` + Reset + `⣰⣿⣿⣿⣿⣿⣿⢿⡿⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣯⠻⡜⠀⠀⠀⠀ ⠀⠀
+   ` + Yellow + `⠀⠀ ⣼⢿⣗` + Reset + `⣀⡶⣯⢻⢏⣿⣳⣾⣿⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣏⢷⣺⣝⡾⣤⣄⡀⠀⠀⠀⠀⠀
    ⠀⠀⠀⢀⣴⣾⣿⣿⣿⣯⣾⣷⣿⣿⣿⣿⣿⢿⡻⣟⡻⢿⢿⡛⣝⣶⣿⣾⣿⣻⢿⣿⣿⣾⡝⡶⣄⠀⠀⠀
    ⠀⢀⡾⣿⣿⣿⢿⣽⣿⣿⣿⣿⣿⣿⣿⣹⣾⣯⣷⣿⣿⣞⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⡵⣩⠞⣀⠀
    ⠀⢾⣽⡿⣟⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢿⣯⢿⣱⢻⡄⠠
@@ -246,13 +287,21 @@ func getConfigLocation() string {
 }
 
 // Returns the correct condition icon depending on condition type and severity
-func getIcon(condition string, severity float64) string {
-	if severity >= 4 {
+func getIcon(condition string, severity float64, currentTime string, sunrise string, sunset string) string {
+	if severity >= 4 && condition == "Rain" {
 		return storm
 	}
+
+	ct, _ := time.Parse("15:04:05", currentTime)
+	sr, _ := time.Parse("15:04:05", sunrise)
+	ss, _ := time.Parse("15:04:05", sunset)
 	switch condition {
 	case "Clear":
-		return sunny
+		if ct.Before(sr) || ct.After(ss) {
+			return moon
+		} else {
+			return sunny
+		}
 	case "Snow":
 		return snow
 	case "Overcast":
@@ -260,7 +309,11 @@ func getIcon(condition string, severity float64) string {
 	case "Cloudy":
 		return cloud
 	case "Partially cloudy":
-		return partialCloud
+		if ct.Before(sr) || ct.After(ss) {
+			return partialCloud
+		} else {
+			return partialCloudNight
+		}
 	case "Rain":
 		return rain
 	default:
@@ -285,6 +338,17 @@ func convertTime(time any) any {
 // Prints the weather details with an icon and table of values
 func printWeather(weatherMap map[string]any, address string) {
 	currentConditionsInterface := weatherMap["currentConditions"]
+
+	// Collects any alerts if they exist
+	var alertEvents []string
+	alertsInterface := weatherMap["alerts"]
+	if alertsArr, ok := alertsInterface.([]any); ok {
+		for _, alert := range alertsArr {
+			if alertMap, ok2 := alert.(map[string]any); ok2 {
+				alertEvents = append(alertEvents, fmt.Sprintf("%v", alertMap["event"]))
+			}
+		}
+	}
 
 	// Temp range and description aren't included in currentConditions, so grabs today from days array and gets them from there
 	var description any
@@ -312,6 +376,7 @@ func printWeather(weatherMap map[string]any, address string) {
 		sunrise := currentConditions["sunrise"]
 		sunset := currentConditions["sunset"]
 		severity := currentConditions["severerisk"]
+		currentTime := currentConditions["datetime"]
 
 		// Converts severity interface into a float
 		var severityVal float64
@@ -330,6 +395,11 @@ func printWeather(weatherMap map[string]any, address string) {
 			statsHeaders = slices.Insert(statsHeaders, 6, "Precipitation Depth")
 			statsList = slices.Insert(statsList, 6, precip)
 		}
+		if len(alertEvents) > 0 {
+			var joinedAlerts any = strings.Join(alertEvents, ", ")
+			statsHeaders = slices.Insert(statsHeaders, len(statsList)-1, "Alerts")
+			statsList = slices.Insert(statsList, len(statsList)-1, joinedAlerts)
+		}
 
 		// Determines whether or not the stats list is odd or even. Needed to provide the correct offset compared to the icon
 		var oddOrEven int
@@ -340,7 +410,7 @@ func printWeather(weatherMap map[string]any, address string) {
 		}
 
 		firstCondition := strings.Split(fmt.Sprintf("%v", conditions), ", ")[0]
-		iconSplit := strings.Split(getIcon(firstCondition, severityVal), "\n")
+		iconSplit := strings.Split(getIcon(firstCondition, severityVal, fmt.Sprintf("%v", currentTime), fmt.Sprintf("%v", sunrise), fmt.Sprintf("%v", sunset)), "\n")
 
 		// Prints main icon along with stats list with the correct offset and NerdFont icons
 		offsetLeft := (len(iconSplit) / 2) - (len(statsList) / 2)
@@ -403,6 +473,10 @@ func printWeather(weatherMap map[string]any, address string) {
 					stringPadding += "│ "
 					fmt.Printf("%s\ue315 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
 					fmt.Printf(colorSeverity(severityVal)+"%.0f"+Reset+"\n", statsList[arrayOffset])
+				case "Alerts":
+					stringPadding += "│ "
+					fmt.Printf("%s\uf421 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
+					fmt.Printf("%v\n", statsList[arrayOffset])
 				default:
 					stringPadding += "│ "
 					fmt.Printf("%s"+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
