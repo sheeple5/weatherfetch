@@ -3,6 +3,11 @@ weatherfetch is a play off of the popular command "neofetch" (now known as "fast
 weather information from an API and print it like neofetch. This currently does not require an API account or key as it utilizes the preview API from
 [Visual Crossing](https://www.visualcrossing.com/weather-api/?gad_source=1&gad_campaignid=21410448611&gclid=Cj0KCQiAiqDJBhCXARIsABk2kSmj_X0ARYhU_7p1wvIFd8-z_nQrPQ0bQnIjyeFkJgAYNylRIIXqmsMaAnDMEALw_wcB).
 
+## Prerequisites
+This program assumes you have the following already installed on your machine:
+ - Go >= 1.25.3
+ - A [NerdFont](https://www.nerdfonts.com/)
+
 ## Building/Installing
 Run the following command to build the binary:
 
@@ -12,7 +17,7 @@ You can also use the makefile to build:
 
 `make build`
 
-To "install" (i.e. build and put it into a bin path), use the following to put it into your home's local bin:
+To "install", use the following to build the binary move it into your home's local bin:
 
 `make install`
 
