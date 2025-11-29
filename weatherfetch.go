@@ -351,7 +351,7 @@ func printWeather(weatherMap map[string]any, address string) {
 		}
 	}
 
-	// Temp range and description aren't included in currentConditions, so grabs today from days array and gets them from there
+	// Temp range and description aren't included in currentConditions, so grabs today from days array and gets them from there udk
 	var description any
 	var tempHigh any
 	var tempLow any
@@ -389,7 +389,7 @@ func printWeather(weatherMap map[string]any, address string) {
 
 		// Creates arrays that the table will be created from. Excludes precipitation if there is none, otherwise inserts it
 		statsHeaders := []any{"", "Description", "Condition", "Temperature", "Precipitation Chance", "Humidity", "UV Index", "Wind Speed", "Sunrise", "Sunset", "Storm Risk", ""}
-		statsList := []any{"┌────────────── " + Red + resolvedAddress + Reset + " " + extendHeader(description, resolvedAddress) + "──────────────┐", description, conditions, temp, precipprob, humidity, uvindex, windspeed, convertTime(sunrise), convertTime(sunset), severityVal, "└" + strings.Repeat("─", len(resolvedAddress)) + "──────────────────────────────┘"}
+		statsList := []any{"┌────────────── " + Red + resolvedAddress + Reset + " " + extendUpperHeader(description, resolvedAddress) + "──────────────┐", description, conditions, temp, precipprob, humidity, uvindex, windspeed, convertTime(sunrise), convertTime(sunset), severityVal, "└" + strings.Repeat("─", len(resolvedAddress)) + "──────────────────────────────┘"}
 		if preciptype != nil {
 			statsHeaders = slices.Insert(statsHeaders, 5, "Precipitation Type")
 			statsList = slices.Insert(statsList, 5, preciptype)
@@ -400,6 +400,11 @@ func printWeather(weatherMap map[string]any, address string) {
 			var joinedAlerts any = strings.Join(alertEvents, ", ")
 			statsHeaders = slices.Insert(statsHeaders, len(statsList)-1, "Alerts")
 			statsList = slices.Insert(statsList, len(statsList)-1, joinedAlerts)
+
+			// Extends the lower header if the alerts list go past the current length
+			currentLowerHeader := fmt.Sprintf("%v", statsList[len(statsList)-1])
+			var extendedLowerHeader any = currentLowerHeader[:3] + extendLowerHeader(resolvedAddress, joinedAlerts) + currentLowerHeader[3:]
+			statsList[len(statsList)-1] = extendedLowerHeader
 		}
 
 		// Determines whether or not the stats list is odd or even. Needed to provide the correct offset compared to the icon
@@ -491,13 +496,25 @@ func printWeather(weatherMap map[string]any, address string) {
 	}
 }
 
-// Extends the top header bar if the description is longer than it
-func extendHeader(description any, address string) string {
+// Extends the upper header bar if the description is longer than it
+func extendUpperHeader(description any, address string) string {
 	descriptionString := fmt.Sprintf("%v", description)
 	lengthDescription := len(descriptionString) + 17
 	lengthHeader := len(address) + 32
 	if lengthDescription >= lengthHeader {
 		return strings.Repeat("─", lengthDescription-lengthHeader+1)
+	} else {
+		return ""
+	}
+}
+
+// Extends the lower header bar if the alerts list is longer than it
+func extendLowerHeader(address string, alerts any) string {
+	alertsString := fmt.Sprintf("%v", alerts)
+	lengthAlerts := len(alertsString) + 12
+	lengthHeader := len(address) + 32
+	if lengthAlerts >= lengthHeader {
+		return strings.Repeat("─", lengthAlerts-lengthHeader+1)
 	} else {
 		return ""
 	}
