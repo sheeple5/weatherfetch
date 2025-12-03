@@ -11,8 +11,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"unicode"
-	"unicode/utf8"
 
 	"github.com/go-viper/mapstructure/v2"
 )
@@ -50,7 +48,7 @@ const rain string = `
    ` + Blue + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣶⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀` + Reset + `
    ` + Blue + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠋⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠚⡽⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀` + Reset + `
    ` + Blue + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀⠀⠀⠀` + Reset + `
-	`
+                                           `
 
 const snow string = `
                      ⢀⣤⣶⡿⣽⣻⣞⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -76,7 +74,7 @@ const snow string = `
    ` + White + `    .           .      ❄️               ` + Reset + `
    ` + White + `      ❄️    .                           ` + Reset + `
    ` + White + `       .                                ` + Reset + `
-	`
+                                           `
 
 const cloud string = `
                      ⢀⣤⣶⡿⣽⣻⣞⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -93,7 +91,7 @@ const cloud string = `
    ⠀⠈⢆⠳⡌⣝⢲⡝⣯⢳⡞⣵⢫⣗⡻⣝⢾⣛⢾⣛⠾⣭⢻⡭⣟⢾⡹⢧⠻⣝⢮⡝⡾⠼⣍⠳⢌⠂⠁⠀
    ⠀⠀⠀⠑⠘⢌⠣⠞⡰⢣⠚⡌⢧⡘⡱⢊⠞⢨⠓⡌⠳⣡⠓⡜⢌⠲⡉⢏⡱⢎⠲⡙⡜⠣⠎⠑⠀⠀⠀⠀
    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠈⠈⠀⠀⠀⠁⠈⠀⠀⠀⠁⠀⠀⠀⠈⠀⠁⠈⠀⠈⠁⠈⠀⠁⠀⠀⠀⠀⠀⠀
-	`
+                                           `
 
 const storm string = `
                      ⢀⣤⣶⡿⣽⣻⣞⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -118,7 +116,7 @@ const storm string = `
    ` + Yellow + `⠀                 ⣼⠟⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀` + Reset + `
    ` + Yellow + `                 ⠴⠏                     ` + Reset + `
    ` + Yellow + `                ˙                       ` + Reset + `
-`
+                                           `
 
 const sunny string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
           ` + Yellow + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡔⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀⠀` + Reset + `⠀
@@ -136,7 +134,7 @@ const sunny string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀�
           ` + Yellow + `⠀⠀⠀⠀⢀⣴⣻⠝⠀⡷⠏⠹⡾⣽⡇⢺⣣⠈⠉⠻⣯⠀⠀⠀⠀⠀⠀      ` + Reset + `
           ` + Yellow + `⠀⠀⠀⠀⠍⠉⠀⠀⠔⠋⠀⠀⢹⣳⠇⠀⠍⠀⠀⠀⠍⠀⠀⠀⠀⠀⠀      ` + Reset + `
           ` + Yellow + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠜⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀      ` + Reset + `
-	`
+                                           `
 
 const moon string = `
           ⠀⠀⠀⠀⠀⠀⠀⣀⣤⡴⠶⠿⠛⢏⡿⠖⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀      ⠀
@@ -153,7 +151,7 @@ const moon string = `
           ⠀⠀⠈⠛⢏⣷⣶⣜⣤⣈⠂⠜⠀⢀⣀⡉⡭⠯⠖⠲⠒⢶⢖⣯⠟⠁⠀      
           ⠀⠀⠀⠀⠀⠙⠻⣿⣿⣷⣷⣯⣔⡿⣃⠦⡵⣠⠠⢤⣤⠿⠋⠀⠀⠀⠀      
           ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠓⠿⠽⣷⣿⣾⡿⠞⠛⠉⠀⠀⠀⠀⠀⠀⠀      
-	`
+                                           `
 
 const partialCloud string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
    ` + Yellow + `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡔⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀` + Reset + `⠀
@@ -176,7 +174,7 @@ const partialCloud string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
    ⠀⠈⢆⠳⡌⣝⢲⡝⣯⢳⡞⣵⢫⣗⡻⣝⢾⣛⢾⣛⠾⣭⢻⡭⣟⢾⡹⢧⠻⣝⢮⡝⡾⠼⣍⠳⢌⠂⠁⠀
    ⠀⠀⠀⠑⠘⢌⠣⠞⡰⢣⠚⡌⢧⡘⡱⢊⠞⢨⠓⡌⠳⣡⠓⡜⢌⠲⡉⢏⡱⢎⠲⡙⡜⠣⠎⠑⠀⠀⠀⠀
    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠈⠈⠀⠀⠀⠁⠈⠀⠀⠀⠁⠀⠀⠀⠈⠀⠁⠈⠀⠈⠁⠈⠀⠁⠀⠀⠀⠀⠀⠀
-	`
+                                           `
 
 const partialCloudNight string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
    ⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡴⠶⠿⠛⢏⡿⠖⠂⠀⠀⠀⠀⠀⠀⠀⠀              
@@ -199,8 +197,9 @@ const partialCloudNight string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀�
    ⠀⠈⢆⠳⡌⣝⢲⡝⣯⢳⡞⣵⢫⣗⡻⣝⢾⣛⢾⣛⠾⣭⢻⡭⣟⢾⡹⢧⠻⣝⢮⡝⡾⠼⣍⠳⢌⠂⠁⠀
    ⠀⠀⠀⠑⠘⢌⠣⠞⡰⢣⠚⡌⢧⡘⡱⢊⠞⢨⠓⡌⠳⣡⠓⡜⢌⠲⡉⢏⡱⢎⠲⡙⡜⠣⠎⠑⠀⠀⠀⠀
    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠈⠈⠀⠀⠀⠁⠈⠀⠀⠀⠁⠀⠀⠀⠈⠀⠁⠈⠀⠈⠁⠈⠀⠁⠀⠀⠀⠀⠀⠀
-	`
+                                           `
 
+// Weather structs that store data received from the weather API
 type WeatherConditions struct {
 	Address           string
 	Alerts            []Alert
@@ -208,7 +207,6 @@ type WeatherConditions struct {
 	Description       string
 	Days              []Day
 	ResolvedAddress   string
-	Extra             map[string]any
 }
 
 type Alert struct {
@@ -238,7 +236,7 @@ type Day struct {
 	TempMin     float64
 }
 
-// Gets the weather map from the API given an input address/location
+// Gets the weather data from the API given an input address/location
 func getWeather(address string) WeatherConditions {
 	baseURL := fmt.Sprintf("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timelinepreview/%s?key=-&options=preview", address)
 
@@ -254,6 +252,7 @@ func getWeather(address string) WeatherConditions {
 	}
 	stringBody := string(body)
 
+	// Converts the received JSON data and converts it into a map
 	var weatherData map[string]any
 	err = json.Unmarshal([]byte(stringBody), &weatherData)
 	if err != nil {
@@ -261,6 +260,7 @@ func getWeather(address string) WeatherConditions {
 		panic(err)
 	}
 
+	// Loads the JSON data into the weather structs using mapstructure
 	var weatherMap WeatherConditions
 	err = mapstructure.Decode(weatherData, &weatherMap)
 	if err != nil {
@@ -367,9 +367,8 @@ func getIcon(condition string, severity float64, currentTime string, sunrise str
 }
 
 // Converts military time to regular time
-func convertTime(time any) any {
-	stringTime := fmt.Sprintf("%v", time)
-	timeParts := strings.Split(stringTime, ":")
+func convertTime(time string) string {
+	timeParts := strings.Split(time, ":")
 
 	intHour, _ := strconv.Atoi(timeParts[0])
 	if 12 > intHour {
@@ -383,133 +382,112 @@ func convertTime(time any) any {
 // Prints the weather details with an icon and table of values
 func printWeather(weatherMap WeatherConditions) {
 	currentConditions := weatherMap.CurrentConditions
-	resolvedAddress := weatherMap.ResolvedAddress
 
 	// Collects any alerts if they exist
 	var alertEvents []string
+	var joinedAlerts string
 	for _, alert := range weatherMap.Alerts {
 		alertEvents = append(alertEvents, alert.Event)
 	}
+	joinedAlerts = strings.Join(alertEvents, ", ")
 
 	// Temp range and description aren't included in currentConditions, so grabs today from days array and gets them from there
 	description := weatherMap.Days[0].Description
 	tempHigh := weatherMap.Days[0].TempMax
 	tempLow := weatherMap.Days[0].TempMin
 
-	// Stores needed values into variables from weatherMap
-	temp := currentConditions.Temp
-	precip := currentConditions.Precip
-	precipprob := currentConditions.PrecipProb
-	preciptype := currentConditions.PrecipType
-	humidity := currentConditions.Humidity
-	conditions := currentConditions.Conditions
-	uvindex := currentConditions.UVIndex
-	windspeed := currentConditions.WindSpeed
-	sunrise := currentConditions.Sunrise
-	sunset := currentConditions.Sunset
-	severity := currentConditions.SevereRisk
-	currentTime := currentConditions.DateTime
+	// Creates array of headers that the table will be created from
+	statsHeaders := []string{"Header 1", "Description", "Condition", "Temperature", "Precipitation Chance", "Humidity", "UV Index", "Wind Speed", "Sunrise", "Sunset", "Storm Risk", "Header 2"}
+	topHeader := "┌────────────── " + Red + weatherMap.ResolvedAddress + Reset + " " + extendUpperHeader(description, weatherMap.ResolvedAddress) + "──────────────┐"
+	bottomHeader := "└" + strings.Repeat("─", len(weatherMap.ResolvedAddress)) + "──────────────────────────────┘"
 
-	// Creates arrays that the table will be created from. Excludes precipitation if there is none, otherwise inserts it
-	statsHeaders := []string{"", "Description", "Condition", "Temperature", "Precipitation Chance", "Humidity", "UV Index", "Wind Speed", "Sunrise", "Sunset", "Storm Risk", ""}
-	statsList := []any{"┌────────────── " + Red + resolvedAddress + Reset + " " + extendUpperHeader(description, resolvedAddress) + "──────────────┐", description, conditions, temp, precipprob, humidity, uvindex, windspeed, convertTime(sunrise), convertTime(sunset), severity, "└" + strings.Repeat("─", len(resolvedAddress)) + "──────────────────────────────┘"}
-	if preciptype != nil {
+	// Adds precipitation type and depth if preciptype exists
+	if currentConditions.PrecipType != nil {
 		statsHeaders = slices.Insert(statsHeaders, 5, "Precipitation Type")
-		statsList = slices.Insert(statsList, 5, any(preciptype))
 		statsHeaders = slices.Insert(statsHeaders, 6, "Precipitation Depth")
-		statsList = slices.Insert(statsList, 6, any(precip))
 	}
+	// Adds alerts to headers and extends the lower header if the alerts list go past the current length
 	if len(alertEvents) > 0 {
-		var joinedAlerts any = strings.Join(alertEvents, ", ")
-		statsHeaders = slices.Insert(statsHeaders, len(statsList)-1, "Alerts")
-		statsList = slices.Insert(statsList, len(statsList)-1, joinedAlerts)
-
-		// Extends the lower header if the alerts list go past the current length
-		currentLowerHeader := fmt.Sprintf("%v", statsList[len(statsList)-1])
-		var extendedLowerHeader any = currentLowerHeader[:3] + extendLowerHeader(resolvedAddress, joinedAlerts) + currentLowerHeader[3:]
-		statsList[len(statsList)-1] = extendedLowerHeader
+		statsHeaders = slices.Insert(statsHeaders, len(statsHeaders)-1, "Alerts")
+		bottomHeader = bottomHeader[:3] + extendLowerHeader(weatherMap.ResolvedAddress, joinedAlerts) + bottomHeader[3:]
 	}
 
-	// Determines whether or not the stats list is odd or even. Needed to provide the correct offset compared to the icon
-	var oddOrEven int
-	if len(statsHeaders)%2 == 0 {
-		oddOrEven = 1
-	} else {
-		oddOrEven = 0
-	}
-
-	firstCondition := strings.Split(fmt.Sprintf("%v", conditions), ", ")[0]
-	iconSplit := strings.Split(getIcon(firstCondition, severity, fmt.Sprintf("%v", currentTime), fmt.Sprintf("%v", sunrise), fmt.Sprintf("%v", sunset)), "\n")
+	// Pulls first condition from the list to determine the weather icon used
+	firstCondition := strings.Split(currentConditions.Conditions, ", ")[0]
+	iconSplit := strings.Split(getIcon(firstCondition, currentConditions.SevereRisk, currentConditions.DateTime, currentConditions.Sunrise, currentConditions.Sunset), "\n")
 
 	// Prints main icon along with stats list with the correct offset and NerdFont icons
-	offsetLeft := (len(iconSplit) / 2) - (len(statsList) / 2)
-	offsetRight := (len(iconSplit) / 2) + (len(statsList) / 2)
+	offsetLeft := (len(iconSplit) / 2) - (len(statsHeaders) / 2)
+	offsetRight := (len(iconSplit) / 2) + (len(statsHeaders) / 2)
+	oddOffset := 1 - (len(statsHeaders) % 2)
 	for i, iconLine := range iconSplit {
 		fmt.Print(iconLine)
-		if i >= offsetLeft && i <= offsetRight-oddOrEven {
+		if i >= offsetLeft && i <= offsetRight-oddOffset {
 			arrayOffset := i - offsetLeft
 			stringPadding := "             "
 
 			switch statsHeaders[arrayOffset] {
-			case "":
+			case "Header 1":
 				fmt.Print(stringPadding)
-				fmt.Printf("%v\n", statsList[arrayOffset])
+				fmt.Printf("%s\n", topHeader)
+			case "Header 2":
+				fmt.Print(stringPadding)
+				fmt.Printf("%s\n", bottomHeader)
 			case "Description":
 				stringPadding += "│ "
-				fmt.Printf("%s\uf405 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v\n", statsList[arrayOffset])
+				fmt.Printf("%s\uf405 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%s\n", description)
 			case "Condition":
 				stringPadding += "│ "
-				fmt.Printf("%s\uebaa "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v\n", statsList[arrayOffset])
+				fmt.Printf("%s\uebaa "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%s\n", currentConditions.Conditions)
 			case "Temperature":
 				stringPadding += "│ "
-				fmt.Printf("%s\uf2c8 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf(colorTemp(statsList[arrayOffset])+"%vºF "+Reset+"(%v - %v)\n", statsList[arrayOffset], tempLow, tempHigh)
+				fmt.Printf("%s\uf2c8 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf(colorTemp(currentConditions.Temp)+"%0.fºF "+Reset+"(%0.f - %0.f)\n", currentConditions.Temp, tempLow, tempHigh)
 			case "Precipitation Chance":
 				stringPadding += "│ "
-				fmt.Printf("%s\ue275 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v%%\n", statsList[arrayOffset])
+				fmt.Printf("%s\ue275 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%d%%\n", currentConditions.PrecipProb)
 			case "Precipitation Type":
 				stringPadding += "│ "
-				fmt.Printf("%s\ue318 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%s\n", interfaceToArray(statsList[arrayOffset]))
+				fmt.Printf("%s\ue318 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%s\n", strings.Join(currentConditions.PrecipType, ", "))
 			case "Precipitation Depth":
 				stringPadding += "│ "
-				fmt.Printf("%s\uef30 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v in.\n", statsList[arrayOffset])
+				fmt.Printf("%s\uef30 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%0.f in.\n", currentConditions.Precip)
 			case "Humidity":
 				stringPadding += "│ "
-				fmt.Printf("%s\ue373 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v%%\n", statsList[arrayOffset])
+				fmt.Printf("%s\ue373 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%0.f%%\n", currentConditions.Humidity)
 			case "UV Index":
 				stringPadding += "│ "
-				fmt.Printf("%s\ue30d "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v\n", statsList[arrayOffset])
+				fmt.Printf("%s\ue30d "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%d\n", currentConditions.UVIndex)
 			case "Wind Speed":
 				stringPadding += "│ "
-				fmt.Printf("%s\uef16 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v mph\n", statsList[arrayOffset])
+				fmt.Printf("%s\uef16 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%0.f mph\n", currentConditions.WindSpeed)
 			case "Sunrise":
 				stringPadding += "│ "
-				fmt.Printf("%s\ue34c "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v\n", statsList[arrayOffset])
+				fmt.Printf("%s\ue34c "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%s\n", convertTime(currentConditions.Sunrise))
 			case "Sunset":
 				stringPadding += "│ "
-				fmt.Printf("%s\ue34d "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v\n", statsList[arrayOffset])
+				fmt.Printf("%s\ue34d "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%s\n", convertTime(currentConditions.Sunset))
 			case "Storm Risk":
 				stringPadding += "│ "
-				fmt.Printf("%s\ue315 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf(colorSeverity(severity)+"%.0f"+Reset+"\n", statsList[arrayOffset])
+				fmt.Printf("%s\ue315 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf(colorSeverity(currentConditions.SevereRisk)+"%.0f"+Reset+"\n", currentConditions.SevereRisk)
 			case "Alerts":
 				stringPadding += "│ "
-				fmt.Printf("%s\uf421 "+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v\n", statsList[arrayOffset])
+				fmt.Printf("%s\uf421 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
+				fmt.Printf("%s\n", joinedAlerts)
 			default:
 				stringPadding += "│ "
-				fmt.Printf("%s"+Blue+"%v: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%v\n", statsList[arrayOffset])
+				fmt.Printf("%s"+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
 			}
 
 		} else {
@@ -519,9 +497,8 @@ func printWeather(weatherMap WeatherConditions) {
 }
 
 // Extends the upper header bar if the description is longer than it
-func extendUpperHeader(description any, address string) string {
-	descriptionString := fmt.Sprintf("%v", description)
-	lengthDescription := len(descriptionString) + 17
+func extendUpperHeader(description string, address string) string {
+	lengthDescription := len(description) + 17
 	lengthHeader := len(address) + 32
 	if lengthDescription >= lengthHeader {
 		return strings.Repeat("─", lengthDescription-lengthHeader+1)
@@ -531,9 +508,8 @@ func extendUpperHeader(description any, address string) string {
 }
 
 // Extends the lower header bar if the alerts list is longer than it
-func extendLowerHeader(address string, alerts any) string {
-	alertsString := fmt.Sprintf("%v", alerts)
-	lengthAlerts := len(alertsString) + 12
+func extendLowerHeader(address string, alerts string) string {
+	lengthAlerts := len(alerts) + 12
 	lengthHeader := len(address) + 32
 	if lengthAlerts >= lengthHeader {
 		return strings.Repeat("─", lengthAlerts-lengthHeader+1)
@@ -543,21 +519,17 @@ func extendLowerHeader(address string, alerts any) string {
 }
 
 // Colors the temperature reading depending on heat levels
-func colorTemp(temp any) string {
-	if tempVal, ok := temp.(float64); ok {
-		if tempVal < 45 {
-			return Cyan
-		} else if tempVal < 60 {
-			return Blue
-		} else if tempVal < 78 {
-			return Green
-		} else if tempVal < 90 {
-			return Yellow
-		} else {
-			return Red
-		}
+func colorTemp(temp float64) string {
+	if temp < 45 {
+		return Cyan
+	} else if temp < 60 {
+		return Blue
+	} else if temp < 78 {
+		return Green
+	} else if temp < 90 {
+		return Yellow
 	} else {
-		return ""
+		return Red
 	}
 }
 
@@ -570,30 +542,6 @@ func colorSeverity(severity float64) string {
 	} else {
 		return Red
 	}
-}
-
-// Converts an interface to a joined string for the precipitation list
-func interfaceToArray(i any) string {
-	var s []string
-	if arr, ok := i.([]any); ok {
-		for _, j := range arr {
-			if j, ok2 := j.(string); ok2 {
-				s = append(s, capFirst(j))
-			}
-		}
-	}
-	return strings.Join(s, ", ")
-}
-
-// Capitalizes the first letter of a string
-func capFirst(s string) string {
-	if s == "" {
-		return ""
-	}
-
-	r, _ := utf8.DecodeRuneInString(s)
-	upperChar := unicode.ToUpper(r)
-	return string(upperChar) + s[1:]
 }
 
 // Driver for the program
