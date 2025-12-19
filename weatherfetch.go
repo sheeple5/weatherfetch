@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/go-viper/mapstructure/v2"
 )
@@ -91,6 +92,26 @@ const cloud string = `
    ⠀⠈⢆⠳⡌⣝⢲⡝⣯⢳⡞⣵⢫⣗⡻⣝⢾⣛⢾⣛⠾⣭⢻⡭⣟⢾⡹⢧⠻⣝⢮⡝⡾⠼⣍⠳⢌⠂⠁⠀
    ⠀⠀⠀⠑⠘⢌⠣⠞⡰⢣⠚⡌⢧⡘⡱⢊⠞⢨⠓⡌⠳⣡⠓⡜⢌⠲⡉⢏⡱⢎⠲⡙⡜⠣⠎⠑⠀⠀⠀⠀
    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠈⠈⠀⠀⠀⠁⠈⠀⠀⠀⠁⠀⠀⠀⠈⠀⠁⠈⠀⠈⠁⠈⠀⠁⠀⠀⠀⠀⠀⠀
+                                           `
+
+const fog string = `
+                     ⢀⣤⣶⡿⣽⣻⣞⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+              ⠀⠀⠀⡀⢀⣴⣾⣿⣿⣿⢿⣿⡿⣿⣿⣾⣯⢷⣂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+           ⠀⠀⣤⣴⣾⣿⣿⣟⣾⣿⡿⣟⣿⣿⣾⣿⣟⣿⣿⣿⣿⣽⢣⠄⠀⠀⠀⠀⠀⠀⠀⠀
+        ⠀⠀⢀⣰⣿⣿⣿⣿⣿⣿⢿⡿⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣯⠻⡜⠀⠀⠀⠀⠀⠀⠀⠀
+         ⣀⡶⣯⢻⢏⣿⣳⣾⣿⣿⣟⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣏⢷⣺⣝⡾⣤⣄⡀⠀⠀⠀⠀⠀
+   ⠀⠀⠀⢀⣴⣾⣿⣿⣿⣯⣾⣷⣿⣿⣿⣿⣿⢿⡻⣟⡻⢿⢿⡛⣝⣶⣿⣾⣿⣻⢿⣿⣿⣾⡝⡶⣄⠀⠀⠀
+   ⠀⢀⡾⣿⣿⣿⢿⣽⣿⣿⣿⣿⣿⣿⣿⣹⣾⣯⣷⣿⣿⣞⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⡵⣩⠞⣀⠀
+   ⠀⢾⣽⡿⣟⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢿⣯⢿⣱⢻⡄⠠
+   ⣘⢮⣟⣿⣽⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣟⢯⢞⣯⢖⠠
+   ⠌⠹⣾⡹⣞⣿⣽⣻⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⡽⣟⣯⢟⣾⡹⢎⡗⣎⠒
+   ⠐⣌⢳⡽⣹⡞⣧⡟⣷⢫⣷⣻⢭⣻⡽⢯⣿⢿⣯⢿⣿⣟⡿⣿⢯⣟⣿⢾⡽⢯⢿⣹⢮⡟⡾⢡⣋⠼⡐⠂
+   ⠀⠈⢆⠳⡌⣝⢲⡝⣯⢳⡞⣵⢫⣗⡻⣝⢾⣛⢾⣛⠾⣭⢻⡭⣟⢾⡹⢧⠻⣝⢮⡝⡾⠼⣍⠳⢌⠂⠁⠀
+   ⠀⠀⠀⠑⠘⢌⠣⠞⡰⢣⠚⡌⢧⡘⡱⢊⠞⢨⠓⡌⠳⣡⠓⡜⢌⠲⡉⢏⡱⢎⠲⡙⡜⠣⠎⠑⠀⠀⠀⠀
+              ⠀⠀⠀⠀⠀⠀⠀⢀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀           ⣤⣤⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣷⣶⣦⣤⡤⢤⣴⣶⣶⣤⠄⠀⠀⠀⠀⠀  
+⠀         ⠠⢴⣾⣿⣿⡿⠟⠛⠛⠛⠛⠛⢛⣉⣩⣥⣤⣤⣤⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀    
+⠀⠀⠀         ⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠛⠛⠛⠋⠉⠉⠀⠀         
                                            `
 
 const storm string = `
@@ -199,7 +220,7 @@ const partialCloudNight string = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀�
    ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠈⠈⠀⠀⠀⠁⠈⠀⠀⠀⠁⠀⠀⠀⠈⠀⠁⠈⠀⠈⠁⠈⠀⠁⠀⠀⠀⠀⠀⠀
                                            `
 
-// Weather structs that store data received from the weather API
+// WeatherConditions struct that stores data received from the weather API
 type WeatherConditions struct {
 	Address           string
 	Alerts            []Alert
@@ -337,9 +358,11 @@ func getConfigLocation() string {
 }
 
 // Returns the correct condition icon depending on condition type and severity
-func getIcon(condition string, severity float64, currentTime string, sunrise string, sunset string) string {
+func getIcon(condition string, severity float64, currentTime string, sunrise string, sunset string, alerts []string) string {
 	if severity >= 4 && condition == "Rain" {
 		return storm
+	} else if slices.Contains(alerts, "Dense Fog Advisory") {
+		return fog
 	}
 
 	ct, _ := time.Parse("15:04:05", currentTime)
@@ -384,6 +407,14 @@ func convertTime(time string) string {
 	}
 }
 
+func precipTypesUpper(preciptypes []string) []string {
+	var fixedTypes []string
+	for _, preciptype := range preciptypes {
+		fixedTypes = append(fixedTypes, string(unicode.ToUpper(rune(preciptype[0])))+preciptype[1:])
+	}
+	return fixedTypes
+}
+
 // Prints the weather details with an icon and table of values
 func printWeather(weatherMap WeatherConditions) {
 	currentConditions := weatherMap.CurrentConditions
@@ -419,7 +450,7 @@ func printWeather(weatherMap WeatherConditions) {
 
 	// Pulls first condition from the list to determine the weather icon used
 	firstCondition := strings.Split(currentConditions.Conditions, ", ")[0]
-	iconSplit := strings.Split(getIcon(firstCondition, currentConditions.SevereRisk, currentConditions.DateTime, currentConditions.Sunrise, currentConditions.Sunset), "\n")
+	iconSplit := strings.Split(getIcon(firstCondition, currentConditions.SevereRisk, currentConditions.DateTime, currentConditions.Sunrise, currentConditions.Sunset, alertEvents), "\n")
 
 	// Prints main icon along with stats list with the correct offset and NerdFont icons
 	offsetLeft := (len(iconSplit) / 2) - (len(statsHeaders) / 2)
@@ -457,7 +488,7 @@ func printWeather(weatherMap WeatherConditions) {
 			case "Precipitation Type":
 				stringPadding += "│ "
 				fmt.Printf("%s\ue318 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
-				fmt.Printf("%s\n", strings.Join(currentConditions.PrecipType, ", "))
+				fmt.Printf("%s\n", strings.Join(precipTypesUpper(currentConditions.PrecipType), ", "))
 			case "Precipitation Depth":
 				stringPadding += "│ "
 				fmt.Printf("%s\uef30 "+Blue+"%s: "+Reset, stringPadding, statsHeaders[arrayOffset])
