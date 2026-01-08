@@ -449,10 +449,24 @@ func printWeather(weatherMap WeatherConditions) {
 	}
 	joinedAlerts = strings.Join(alertEvents, ", ")
 
-	// Temp range and description aren't included in currentConditions, so grabs today from days array and gets them from there
 	description := weatherMap.Days[0].Description
-	tempHigh := weatherMap.Days[0].TempMax
-	tempLow := weatherMap.Days[0].TempMin
+
+	// Temp range and description aren't included in currentConditions, so grabs today from days array and gets them from there
+	var tempHigh float64
+	var tempLow float64
+
+	// Sometimes, the actual temp falls outside the predicted range. As such, the range will extend if this occurs
+	if currentConditions.Temp < weatherMap.Days[0].TempMax {
+		tempHigh = weatherMap.Days[0].TempMax
+	} else {
+		tempHigh = currentConditions.Temp
+	}
+
+	if currentConditions.Temp > weatherMap.Days[0].TempMin {
+		tempLow = weatherMap.Days[0].TempMin
+	} else {
+		tempLow = currentConditions.Temp
+	}
 
 	// Creates array of headers that the table will be created from
 	statsHeaders := []string{"Header 1", "Description", "Condition", "Temperature", "Precipitation Chance", "Humidity", "UV Index", "Wind Speed", "Sunrise", "Sunset", "Storm Risk", "Header 2"}
